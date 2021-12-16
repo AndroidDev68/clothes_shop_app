@@ -29,6 +29,10 @@ dependencies:
   oauth2_dio:
     git: https://github.com/dangngocduc/oauth2_dio
 
+  google_fonts: ^2.1.0
+
+  carousel_slider: ^4.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -41,3 +45,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/images/

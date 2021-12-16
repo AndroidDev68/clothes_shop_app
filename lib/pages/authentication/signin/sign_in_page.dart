@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class SignInPage extends StatefulWidget {
+  static const ROUTE_NAME = 'SignInPage';
   const SignInPage({Key? key}) : super(key: key);
 
   @override
