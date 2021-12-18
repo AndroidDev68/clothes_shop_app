@@ -24,7 +24,7 @@ class AppTypography {
 
     static TextStyle header2 = GoogleFonts.lato(
         fontSize: 17,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w900,
         height: 20/18
     );
 
@@ -55,20 +55,21 @@ class AppTypography {
 
     static TextStyle title = GoogleFonts.lato(
         fontSize: 16,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.bold,
         height: 20/18
     );
 
     static TextStyle subtitle = GoogleFonts.lato(
-        fontSize: 9,
-        fontWeight: FontWeight.w400,
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
         height: 20/18
     );
 
-
-
-
-
+    static TextStyle productCategory = GoogleFonts.lato(
+        fontSize: 13,
+        fontWeight: FontWeight.w400,
+        height: 20/18
+    );
 
 
 }

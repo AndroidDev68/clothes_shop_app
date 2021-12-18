@@ -6,7 +6,9 @@ import 'package:get_it/get_it.dart';
 import 'package:oauth2_dio/oauth2_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/blocs/home/home_bloc.dart';
 import 'data/dto/dto.dart';
+import 'data/repositories/home_repository_impl.dart';
 import 'data/repositories/repositories.dart';
 import 'env.dart';
 
@@ -51,4 +53,8 @@ Future initializeDependencies() async {
   GetIt.instance.registerSingleton(AuthNavigationBloc());
 
   GetIt.instance.registerSingleton(AuthBloc());
+
+  GetIt.instance.registerSingleton(HomeBloc({}));
+
+  GetIt.instance.registerSingleton(HomeRepositoryImpl());
 }

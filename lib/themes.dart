@@ -57,11 +57,11 @@ ThemeData light(BuildContext context) {
       ),
     elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
         elevation: 0,
-        padding: kPadding[4],
+        // padding: kPadding[4],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(56),
         ),
-        primary: const Color(0xff6342E8),
+        primary: colorAccent,
         onPrimary: Colors.white,
         textStyle: AppTypography.smallButton
     ),)

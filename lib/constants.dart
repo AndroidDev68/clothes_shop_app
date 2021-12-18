@@ -17,14 +17,18 @@ const kPadding = {
     vertical: 12, horizontal: 48
   ),
   4: EdgeInsets.symmetric(
-    vertical: 16, horizontal: 96
+    vertical: 0, horizontal: 96
   ),
   5:EdgeInsets.symmetric(
       horizontal: 36
   ),
   6:EdgeInsets.symmetric(
     horizontal: 36, vertical: 36
-  )
+  ),
+  7: EdgeInsets.symmetric(
+    vertical: 48, horizontal: 24
+  ),
+  8: EdgeInsets.symmetric(vertical: 16)
 };
 
 
@@ -45,6 +49,9 @@ const kSpacingItem6 = SizedBox(height: 48,);
 const kSpacingItem7 = SizedBox(height: 72,);
 
 const kSpacingItem8 = SizedBox(height: 96,);
+
+
+const Color colorAccent = Color(0xff6342E8);
 
 const USER_ID = "USER_ID";
 const OWNER_ID = "OWNER_ID";

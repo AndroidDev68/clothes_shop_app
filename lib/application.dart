@@ -21,6 +21,7 @@ class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: light(context),
       darkTheme: dark(context),
       home: AuthNavigation(

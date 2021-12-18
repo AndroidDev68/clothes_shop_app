@@ -50,25 +50,29 @@ class _SelectOptionPageState extends State<SelectOptionPage> {
                       style: AppTypography.bodyText1, textAlign: TextAlign.center,),
                   ),
                   kSpacingItem7,
-                  ElevatedButton(
-                      onPressed: (){
-                        Navigator.pushNamed(context, SignupPage.ROUTE_NAME);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: kPadding[4],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(56),
-                          side: const BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          )
+                  Container(
+                    margin: kPadding[4],
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                        onPressed: (){
+                          Navigator.pushNamed(context, SignInPage.ROUTE_NAME);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(56),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            )
+                          ),
+                          primary: Colors.transparent,
+                          onPrimary: Colors.black,
+                          textStyle: AppTypography.smallButton
                         ),
-                        primary: Colors.transparent,
-                        onPrimary: Colors.black,
-                        textStyle: AppTypography.smallButton
-                      ),
-                      child: Text("LOGIN")),
+                        child: Text("LOGIN")),
+                  ),
                   kSpacingItem3,
                   RichText(text: TextSpan(
                     children: [
@@ -78,9 +82,14 @@ class _SelectOptionPageState extends State<SelectOptionPage> {
                     ]
                   )),
                   kSpacingItem3,
-                  ElevatedButton(onPressed: (){
-                    Navigator.pushNamed(context, SignInPage.ROUTE_NAME);
-                  }, child: Text("REGISTER"))
+                  Container(
+                    margin: kPadding[4],
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(onPressed: (){
+                      Navigator.pushNamed(context, SignupPage.ROUTE_NAME);
+                    }, child: Text("REGISTER")),
+                  )
 
                 ],
               ),
