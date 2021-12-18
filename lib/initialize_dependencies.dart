@@ -1,7 +1,9 @@
 import 'package:auth_nav/auth_nav.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/data/blocs/auth/auth_bloc.dart';
+import 'package:flutter_application/data/blocs/basket_bloc/basket_bloc.dart';
 import 'package:flutter_application/data/datasources/local/local_service.dart';
+import 'package:flutter_application/data/repositories/basket_repository_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:oauth2_dio/oauth2_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,7 +56,14 @@ Future initializeDependencies() async {
 
   GetIt.instance.registerSingleton(AuthBloc());
 
-  GetIt.instance.registerSingleton(HomeBloc({}));
+  GetIt.instance.registerSingleton(BasketBloc());
 
   GetIt.instance.registerSingleton(HomeRepositoryImpl());
+
+  GetIt.instance.registerSingleton(BasketRepositoryImpl());
+
+  GetIt.instance.registerSingleton(HomeBloc());
+
+
+
 }

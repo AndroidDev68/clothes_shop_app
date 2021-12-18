@@ -5,6 +5,7 @@ import 'package:flutter_application/data/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:oauth2_dio/oauth2_dio.dart';
+import 'dart:developer' as developer;
 
 class AuthBloc extends Cubit<AuthState> {
   final AuthNavigationBloc authNavigationBloc = GetIt.instance.get();
@@ -28,6 +29,7 @@ class AuthBloc extends Cubit<AuthState> {
   //Call on splash screen
   Future initializeApp() async {
     final profile = await _authRepository.profile();
+    developer.log("value: initializeApp", name:'tz');
     emit(AuthState.authorized(profile));
   }
 

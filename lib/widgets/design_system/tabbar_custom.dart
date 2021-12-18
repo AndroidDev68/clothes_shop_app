@@ -7,7 +7,7 @@ import 'tabbar_item_custom.dart';
 
 class TabBarCustom extends StatefulWidget {
   static const ROUTE_NAME = 'TabbarCustom';
-  final VoidCallback? onChange;
+  final ValueChanged<MapEntry<int,String>>? onChange;
   final List<String> items;
   const TabBarCustom({Key? key, required this.items ,this.onChange}) : super(key: key);
   @override
@@ -18,8 +18,11 @@ class _TabBarCustomState extends State<TabBarCustom> {
   static const TAG = 'TabbarCustom';
   int selectedIndex = 0;
 
-  changeSelectedIndex(int index){
-    selectedIndex = index;
+  changeSelectedIndex(MapEntry<int, String> data){
+    selectedIndex = data.key;
+    if(widget.onChange != null){
+      widget.onChange!(data);
+    }
     setState(() {});
     return;
   }
@@ -33,7 +36,7 @@ class _TabBarCustomState extends State<TabBarCustom> {
           Row(
             children: widget.items.asMap().entries.map((e) => InkWell(
               onTap: (){
-                changeSelectedIndex(e.key);
+                changeSelectedIndex(e);
               },
               child: Row(
                 children: [

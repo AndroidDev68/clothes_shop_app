@@ -14,6 +14,7 @@ class $AssetsIconsGen {
   String get icBasket => 'assets/icons/ic_basket.svg';
   String get icCheckbox => 'assets/icons/ic_checkbox.svg';
   String get icCheckedbox => 'assets/icons/ic_checkedbox.svg';
+  String get icClose => 'assets/icons/ic_close.svg';
   String get icEmail => 'assets/icons/ic_email.svg';
   String get icFullview => 'assets/icons/ic_fullview.svg';
   String get icGridview => 'assets/icons/ic_gridview.svg';

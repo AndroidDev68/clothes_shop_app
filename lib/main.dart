@@ -2,6 +2,7 @@ import 'package:auth_nav/auth_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/blocs/auth/auth_bloc.dart';
+import 'package:flutter_application/data/blocs/basket_bloc/basket_bloc.dart';
 import 'package:flutter_application/data/blocs/home/home_bloc.dart';
 import 'package:flutter_application/initialize_dependencies.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ void main() async {
       BlocProvider.value(value: GetIt.instance.get<AuthNavigationBloc>()),
       BlocProvider.value(value: GetIt.instance.get<AuthBloc>()),
       BlocProvider.value(value: GetIt.instance.get<HomeBloc>()),
+      BlocProvider.value(value: GetIt.instance.get<BasketBloc>()),
     ],
     child: const Application(),
   ));
