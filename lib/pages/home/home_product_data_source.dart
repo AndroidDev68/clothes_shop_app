@@ -8,20 +8,21 @@ import 'package:tuple/tuple.dart';
 class HomeProductDataSource extends paging.PageKeyedDataSource<int, ProductDto>{
   
   HomeRepository homeRepository = GetIt.instance.get<HomeRepositoryImpl>();
-  final String type;
+  final String? type;
+  final String? suggestName;
 
-  HomeProductDataSource(this.type) :super(pageSize: 10);
+  HomeProductDataSource({this.type, this.suggestName}) :super(pageSize: 10);
 
   @override
   Future<Tuple2<List<ProductDto>, int>> loadInitial(int pageSize) async {
-    List<ProductDto> productDto = await homeRepository.getProduct(type, 10, 1);
+    List<ProductDto> productDto = await homeRepository.getProduct(type, suggestName, 10, 1);
     GetIt.instance.get<HomeBloc>().addAll(productDto);
     return Tuple2(productDto, 2);
   }
 
   @override
   Future<Tuple2<List<ProductDto>, int>> loadPageAfter(int params, int pageSize) async {
-    List<ProductDto> productDto = await homeRepository.getProduct(type, 10, params);
+    List<ProductDto> productDto = await homeRepository.getProduct(type, suggestName, 10, params);
     GetIt.instance.get<HomeBloc>().addAll(productDto);
     return Tuple2(productDto, params + 1);
   }

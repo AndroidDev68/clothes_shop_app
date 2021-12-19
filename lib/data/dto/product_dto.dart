@@ -25,6 +25,8 @@ class ProductDto extends ProductModel{
   double stars;
   String descriptions;
   String productCategory;
+  int countOnBasket;
+  bool favorites;
 
 //<editor-fold desc="Data Methods">
 
@@ -38,6 +40,8 @@ class ProductDto extends ProductModel{
     required this.stars,
     required this.descriptions,
     required this.productCategory,
+    required this.countOnBasket,
+    required this.favorites,
   });
 
   @override
@@ -53,7 +57,9 @@ class ProductDto extends ProductModel{
           sizes == other.sizes &&
           stars == other.stars &&
           descriptions == other.descriptions &&
-          productCategory == other.productCategory);
+          productCategory == other.productCategory &&
+          countOnBasket == other.countOnBasket &&
+          favorites == other.favorites);
 
   @override
   int get hashCode =>
@@ -65,7 +71,9 @@ class ProductDto extends ProductModel{
       sizes.hashCode ^
       stars.hashCode ^
       descriptions.hashCode ^
-      productCategory.hashCode;
+      productCategory.hashCode ^
+      countOnBasket.hashCode ^
+      favorites.hashCode;
 
   @override
   String toString() {
@@ -79,6 +87,8 @@ class ProductDto extends ProductModel{
         ' stars: $stars,' +
         ' descriptions: $descriptions,' +
         ' productCategory: $productCategory,' +
+        ' countOnBasket: $countOnBasket,' +
+        ' favorites: $favorites,' +
         '}';
   }
 
@@ -92,6 +102,8 @@ class ProductDto extends ProductModel{
     double? stars,
     String? descriptions,
     String? productCategory,
+    int? countOnBasket,
+    bool? favorites,
   }) {
     return ProductDto(
       id: id ?? this.id,
@@ -103,6 +115,8 @@ class ProductDto extends ProductModel{
       stars: stars ?? this.stars,
       descriptions: descriptions ?? this.descriptions,
       productCategory: productCategory ?? this.productCategory,
+      countOnBasket: countOnBasket ?? this.countOnBasket,
+      favorites: favorites ?? this.favorites,
     );
   }
 
@@ -117,6 +131,8 @@ class ProductDto extends ProductModel{
       'stars': this.stars,
       'descriptions': this.descriptions,
       'productCategory': this.productCategory,
+      'countOnBasket': this.countOnBasket,
+      'favorites': this.favorites,
     };
   }
 
@@ -131,6 +147,8 @@ class ProductDto extends ProductModel{
       stars: map['stars'] as double,
       descriptions: map['descriptions'] as String,
       productCategory: map['productCategory'] as String,
+      countOnBasket: map['countOnBasket'] as int,
+      favorites: map['favorites'] as bool,
     );
   }
 

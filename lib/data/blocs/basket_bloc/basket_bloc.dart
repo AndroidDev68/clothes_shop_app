@@ -1,6 +1,11 @@
+import 'package:flutter_application/data/blocs/home/home_bloc.dart';
+import 'package:flutter_application/data/blocs/home/home_state.dart';
 import 'package:flutter_application/data/dto/product_dto.dart';
+import 'package:flutter_application/data/repositories/basket_repository_impl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as developer;
+
+import 'package:get_it/get_it.dart';
 
 class BasketBloc extends Cubit<Map<String, ProductDto>>{
   BasketBloc() : super({});
@@ -31,5 +36,18 @@ class BasketBloc extends Cubit<Map<String, ProductDto>>{
     });
     developer.log("value: new state: ${newState.length}", name:'tz');
     emit(newState);
+  }
+
+  void removeProduct(int productID){
+    developer.log("value: click remove", name:'tz');
+    state.remove(productID.toString());
+    var newState = {...state};
+    emit(newState);
+    GetIt.instance.get<HomeBloc>().state.maybeWhen((notificationCount, basketCount, viewMode, productData){
+      if(BasketRepositoryImpl.countItemInBasket  > 0){
+        BasketRepositoryImpl.countItemInBasket -=1;
+      }
+      GetIt.instance.get<HomeBloc>().emit(HomeState(notificationCount, basketCount-1, viewMode, productData));
+    }, orElse: (){});
   }
 }

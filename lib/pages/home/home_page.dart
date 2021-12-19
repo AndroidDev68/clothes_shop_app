@@ -7,7 +7,9 @@ import 'package:flutter_application/data/blocs/home/view_mode.dart';
 import 'package:flutter_application/data/dto/product_dto.dart';
 import 'package:flutter_application/gen/assets.gen.dart';
 import 'package:flutter_application/pages/home/basket_page/basket_page.dart';
+import 'package:flutter_application/pages/home/favorite/favorite_page.dart';
 import 'package:flutter_application/pages/home/home_product_data_source.dart';
+import 'package:flutter_application/pages/home/search/search_page.dart';
 import 'package:flutter_application/widgets/app_widget/app_error_widget.dart';
 import 'package:flutter_application/widgets/app_widget/app_loading_widget.dart';
 import 'package:flutter_application/widgets/app_widget/product_widget.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_application/widgets/design_system/tabbar_custom.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'drawe_end.dart';
 import 'icon_badge_widget.dart';
 import 'dart:developer' as developer;
 
@@ -32,17 +35,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    dataSource = HomeProductDataSource("popular");
+    dataSource = HomeProductDataSource(type: "popular");
     context.read<HomeBloc>().init();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    developer.log("value: rebuild home", name:'tz');
     return Scaffold(
       backgroundColor: Colors.white,
+      endDrawer: DraweEnd(),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
+          developer.log("value: BlocBuilder build", name:'tz');
           return state.when((notificationCount, basketCount, viewMode, productData) {
+            developer.log("value: BlocBuilder newstate != oldstate", name:'tz');
             return NestedScrollView(
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
                 return <Widget>[
@@ -67,14 +74,27 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: IconBadgeWidget(SvgPicture.asset(Assets.icons.icBasket, width: 24, height: 24,), countBadge: basketCount,)),
                           const SizedBox(width: 24,),
-                          IconBadgeWidget(SvgPicture.asset(Assets.icons.icHeart, width: 24, height: 24,),),
+                          InkResponse(
+                              onTap: (){
+                                Navigator.pushNamed(context, FavoritePage.ROUTE_NAME);
+                              },
+                              child: IconBadgeWidget(SvgPicture.asset(Assets.icons.icHeart, width: 24, height: 24,),)),
                           const SizedBox(width: 24,),
-                          IconBadgeWidget(SvgPicture.asset(Assets.icons.icSearch, width: 24, height: 24,),),
+                          InkResponse(
+                              onTap: (){
+                                Navigator.pushNamed(context, SearchPage.ROUTE_NAME);
+                              },
+                              child: IconBadgeWidget(SvgPicture.asset(Assets.icons.icSearch, width: 24, height: 24,),)),
                           const SizedBox(width: 24,),
-                          IconBadgeWidget(SvgPicture.asset(Assets.icons.icMenu, width: 24, height: 24,),),
+                          InkResponse(
+                              onTap: (){
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              child: IconBadgeWidget(SvgPicture.asset(Assets.icons.icMenu, width: 24, height: 24,),)),
                         ],
                       ),
                     ),
+                    actions: <Widget>[Container()],
                     pinned: false,
                     floating: true,
                     snap: true,
@@ -91,11 +111,13 @@ class _HomePageState extends State<HomePage> {
                       child: TabBarCustom(
                           items: const ["Popular", "Mens", "Womens", "Sale",],
                         onChange: (MapEntry<int, String> data){
-                          dataSource = HomeProductDataSource(data.value);
+                            developer.log("value: onchange data", name:'tz');
+                          dataSource = HomeProductDataSource(type: data.value);
                           setState(() {});
                         },
                       ),
                     ),
+                    actions: <Widget>[Container()],
                     pinned: true,
                     floating: false,
                     snap: false,
@@ -129,6 +151,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
+                    actions: <Widget>[Container()],
                     pinned: true,
                     floating: false,
                     snap: false,
@@ -146,12 +169,14 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSpacing: 16.0,
                       childAspectRatio: 2/3
                   ),
+                  key: ValueKey(dataSource.hashCode),
                   pageDataSource: dataSource,
                   itemBuilder: (context, productDto, index){
                     return ProductWidget(productDto.id, viewMode);
                   },
                 ) : paging.PagingListView<ProductDto>(
                   pageDataSource: dataSource,
+                  key: ValueKey(dataSource.hashCode),
                   separatorBuilder: (context, index){
                     return const SizedBox(height: 8,);
                   },
@@ -160,6 +185,7 @@ class _HomePageState extends State<HomePage> {
                   },
 
                 ),
+
               ),
             );
           }, loading: ()=>AppLoadingWidget(),

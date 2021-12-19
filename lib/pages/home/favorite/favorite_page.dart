@@ -1,38 +1,33 @@
 
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import 'package:flutter_application/constants.dart';
-import 'package:flutter_application/data/blocs/basket_bloc/basket_bloc.dart';
 import 'package:flutter_application/data/dto/product_dto.dart';
-import 'package:flutter_application/data/repositories/basket_repository_impl.dart';
 import 'package:flutter_application/gen/assets.gen.dart';
-import 'package:flutter_application/pages/home/basket_page/basket_item_widget.dart';
-import 'package:flutter_application/pages/home/basket_page/basket_product_data_source.dart';
+import 'package:flutter_application/pages/home/favorite/favorite_list_data_source.dart';
 import 'package:flutter_application/widgets/design_system/app_typography.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fl_paging/fl_paging.dart' as paging;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'checkout_widget.dart';
+import '../../../constants.dart';
+import 'favorite_item_widget.dart';
 
-class BasketPage extends StatefulWidget {
-  static const ROUTE_NAME = 'BasketPage';
+class FavoritePage extends StatefulWidget {
+  static const ROUTE_NAME = 'FavoritePage';
 
-  const BasketPage({Key? key}) : super(key: key);
+  const FavoritePage();
+
   @override
-  _BasketPageState createState() => _BasketPageState();
+  _FavoritePageState createState() => _FavoritePageState();
 }
 
-class _BasketPageState extends State<BasketPage> {
-  static const TAG = 'BasketPage';
-  late BasketProductDataSource dataSource;
-
+class _FavoritePageState extends State<FavoritePage> {
+  static const TAG = 'FavoritePage';
+  late FavoriteListDataSource dataSource;
   @override
   void initState() {
-    dataSource = BasketProductDataSource();
+    dataSource = FavoriteListDataSource();
     super.initState();
   }
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,14 +46,13 @@ class _BasketPageState extends State<BasketPage> {
                           alignment: Alignment.centerLeft,
                           child: InkResponse(
                               onTap: (){
-                                context.read<BasketBloc>().emit({});
                                 Navigator.of(context).pop();
                               },
                               child: SvgPicture.asset(Assets.icons.icBackArrowBlack, width: 18, height: 18,)))),
                   Positioned.fill(
                       child: Align(
                           alignment: Alignment.center,
-                          child: Text("My Card", style: AppTypography.header3.copyWith(fontWeight: FontWeight.w900),)))
+                          child: Text("My Favorites", style: AppTypography.header3.copyWith(fontWeight: FontWeight.w900),)))
                 ],
               ),
             ),
@@ -66,20 +60,13 @@ class _BasketPageState extends State<BasketPage> {
             Expanded(child: paging.PagingListView<ProductDto>(
               pageDataSource: dataSource,
               isEnablePullToRefresh: false,
-              separatorBuilder: (context, index)=>SizedBox.shrink(),
               itemBuilder: (context, productDto, index){
-                return BasketItemWidget(productDto.id);
+                return FavoriteItemWidget(productDto.id);
               },
             )),
-            CheckoutWidget(),
           ],
         ),
       )
     );
-  }
-  @override
-  void dispose() {
-    BasketRepositoryImpl.countItemHasResponse = 0;
-    super.dispose();
   }
 }

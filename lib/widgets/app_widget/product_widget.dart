@@ -9,6 +9,7 @@ import 'package:flutter_application/gen/assets.gen.dart';
 import 'package:flutter_application/pages/home/product_detail/product_detail_page.dart';
 import 'package:flutter_application/widgets/app_widget/app_error_widget.dart';
 import 'package:flutter_application/widgets/app_widget/app_loading_widget.dart';
+import 'package:flutter_application/widgets/app_widget/text_price_widget.dart';
 import 'package:flutter_application/widgets/design_system/app_typography.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -74,8 +75,7 @@ class ProductWidget extends StatelessWidget {
                 kSpacingItem,
                 Text(productDto.name, style: AppTypography.title,),
                 kSpacingItem2,
-                Text(productDto.price,
-                  style: AppTypography.header3.copyWith(color: const Color(0xffA1A1A1)),)
+                TextPriceWidget(price: productDto.price, color: const Color(0xffA1A1A1),)
               ],
             ),
           )
@@ -106,8 +106,8 @@ class ProductWidget extends StatelessWidget {
                 Text(productDto.productCategory, style: AppTypography.title.copyWith(color: const Color(0xffA1A1A1)),),
                 const SizedBox(height: 4,),
                 Text(productDto.descriptions, maxLines: 3, style: AppTypography.bodyText2.copyWith(color: const Color(0xffA1A1A1)),),
-                kSpacingItem3,
-                Text(productDto.price, style: AppTypography.header3,)
+                kSpacingItem,
+                TextPriceWidget(price: productDto.price, color: Colors.black,)
               ],
             ),
           ),
