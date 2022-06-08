@@ -1,13 +1,19 @@
+import 'dart:developer' as developer;
+
 import 'package:auth_nav/auth_nav.dart';
 import 'package:flutter_application/data/blocs/auth/auth_state.dart';
 import 'package:flutter_application/data/dto/dto.dart';
-import 'package:flutter_application/data/repositories/repositories.dart';
+import 'package:flutter_application/domain/model/error_model.dart';
+import 'package:flutter_application/utils/handle_error.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:oauth2_dio/oauth2_dio.dart';
-import 'dart:developer' as developer;
+import 'package:supabase/supabase.dart';
 
-class AuthBloc extends Cubit<AuthState> {
+import '../../../domain/repository/auth_repository.dart';
+
+class AuthBloc extends Cubit<AuthState> with HandleError{
+
   final AuthNavigationBloc authNavigationBloc = GetIt.instance.get();
 
   final AuthRepository _authRepository = GetIt.instance.get();
@@ -29,7 +35,7 @@ class AuthBloc extends Cubit<AuthState> {
   //Call on splash screen
   Future initializeApp() async {
     final profile = await _authRepository.profile();
-    developer.log("value: initializeApp", name:'tz');
+    developer.log("value: initializeApp", name: 'tz');
     emit(AuthState.authorized(profile));
   }
 
@@ -42,5 +48,14 @@ class AuthBloc extends Cubit<AuthState> {
   Future logout() async {
     await _authRepository.logout();
     GetIt.instance.get<Oauth2Manager<AuthenticationDto>>().add(null);
+  }
+
+  Future<String> register(String email, String password) async {
+   final response = await _authRepository.register(email, password);
+   if(response.statusCode == 200){
+     return "SignUp successfully! Now you can login to start";
+   }else{
+     throw getError(response.error);
+   }
   }
 }

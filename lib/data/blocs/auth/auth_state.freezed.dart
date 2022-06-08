@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'auth_state.dart';
 
@@ -39,6 +40,12 @@ mixin _$AuthState {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(ProfileDto profileDto)? authorized,
+    TResult Function()? unAuthorized,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ProfileDto profileDto)? authorized,
     TResult Function()? unAuthorized,
@@ -49,6 +56,12 @@ mixin _$AuthState {
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateAuthorized value) authorized,
     required TResult Function(AuthStateUnAuthorized value) unAuthorized,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(AuthStateAuthorized value)? authorized,
+    TResult Function(AuthStateUnAuthorized value)? unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -149,6 +162,15 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(ProfileDto profileDto)? authorized,
+    TResult Function()? unAuthorized,
+  }) {
+    return authorized?.call(profileDto);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ProfileDto profileDto)? authorized,
     TResult Function()? unAuthorized,
@@ -167,6 +189,15 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
     required TResult Function(AuthStateUnAuthorized value) unAuthorized,
   }) {
     return authorized(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(AuthStateAuthorized value)? authorized,
+    TResult Function(AuthStateUnAuthorized value)? unAuthorized,
+  }) {
+    return authorized?.call(this);
   }
 
   @override
@@ -241,6 +272,15 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(ProfileDto profileDto)? authorized,
+    TResult Function()? unAuthorized,
+  }) {
+    return unAuthorized?.call();
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ProfileDto profileDto)? authorized,
     TResult Function()? unAuthorized,
@@ -259,6 +299,15 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
     required TResult Function(AuthStateUnAuthorized value) unAuthorized,
   }) {
     return unAuthorized(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(AuthStateAuthorized value)? authorized,
+    TResult Function(AuthStateUnAuthorized value)? unAuthorized,
+  }) {
+    return unAuthorized?.call(this);
   }
 
   @override

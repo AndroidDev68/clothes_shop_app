@@ -1,20 +1,23 @@
 import 'package:flutter_application/domain/model/product_model.dart';
 
-class ProductDto extends ProductModel{
-  @override
-  bool get favoriteModel => favorite;
-
+class ProductDto extends ProductModel {
   @override
   int get idModel => id;
+
+  @override
+  bool get favoriteModel => favorite;
 
   @override
   String get imageModel => image;
 
   @override
-  String get nameModel =>  name;
+  String get nameModel => name;
 
   @override
   String get priceMode => price;
+
+  @override
+  String? demo;
 
   int id;
   bool favorite;

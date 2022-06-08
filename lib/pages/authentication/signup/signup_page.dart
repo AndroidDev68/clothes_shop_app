@@ -1,12 +1,19 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/constants.dart';
+import 'package:flutter_application/data/blocs/auth/auth.dart';
+import 'package:flutter_application/domain/model/error_model.dart';
 import 'package:flutter_application/gen/assets.gen.dart';
+import 'package:flutter_application/lib.dart';
+import 'package:flutter_application/pages/authentication/select_option_page.dart';
 import 'package:flutter_application/widgets/design_system/app_typography.dart';
 import 'package:flutter_application/widgets/form/app_text_form_field_material_custom_icon.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../widgets/dialog/dialog_utils.dart';
 import 'checkbox_remember_me_widget.dart';
 
 class SignupPage extends StatefulWidget {
@@ -24,10 +31,12 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
   final scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -62,20 +71,31 @@ class _SignupPageState extends State<SignupPage> {
                               width: 18,
                               height: 18,
                             ),
-                            onTap: (){
+                            onTap: () {
                               Navigator.of(context).pop();
                             },
                           ),
                           kSpacingItem7,
-                          Text("Get’s started with Geeta.", style: AppTypography.header4.copyWith(color: Colors.white),),
+                          Text(
+                            "Get’s started with Geeta.",
+                            style: AppTypography.header4
+                                .copyWith(color: Colors.white),
+                          ),
                           kSpacingItem2,
                           Padding(
                             padding: const EdgeInsets.only(right: 36.0),
-                            child: Text("Already have an account? Log in",
-                              style: AppTypography.bodyText1.copyWith(color: Colors.white),),
+                            child: Text(
+                              "Already have an account? Log in",
+                              style: AppTypography.bodyText1
+                                  .copyWith(color: Colors.white),
+                            ),
                           ),
                           kSpacingItem7,
-                          Text("REGISTER", style: AppTypography.header3.copyWith(color: Colors.white),)
+                          Text(
+                            "REGISTER",
+                            style: AppTypography.header3
+                                .copyWith(color: Colors.white),
+                          )
                         ],
                       ),
                     ),
@@ -97,7 +117,11 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: "Your name",
                         hintText: "Your full name",
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        leadingIcon: SvgPicture.asset(Assets.icons.icUser, width: 24, height: 24,),
+                        leadingIcon: SvgPicture.asset(
+                          Assets.icons.icUser,
+                          width: 24,
+                          height: 24,
+                        ),
                       ),
                       kSpacingItem5,
                       AppTextFormFieldMaterialCustomIcon(
@@ -107,7 +131,11 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: "Email address",
                         hintText: "Enter your email address",
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        leadingIcon: SvgPicture.asset(Assets.icons.icLock, width: 24, height: 24,),
+                        leadingIcon: SvgPicture.asset(
+                          Assets.icons.icLock,
+                          width: 24,
+                          height: 24,
+                        ),
                       ),
                       kSpacingItem5,
                       AppTextFormFieldMaterialCustomIcon(
@@ -118,19 +146,27 @@ class _SignupPageState extends State<SignupPage> {
                         hintText: "Enter your password",
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         isPassword: true,
-                        leadingIcon: SvgPicture.asset(Assets.icons.icLock, width: 24, height: 24,),
+                        leadingIcon: SvgPicture.asset(
+                          Assets.icons.icLock,
+                          width: 24,
+                          height: 24,
+                        ),
                       ),
                       kSpacingItem3,
                       SizedBox(
                         width: double.infinity,
                         height: 48,
-                        child: ElevatedButton(onPressed: (){},
-                            child: Text("REGISTER")),
+                        child: ElevatedButton(
+                            onPressed: () => _clickSignUp,
+                            child: const Text("REGISTER")),
                       ),
                       kSpacingItem,
                       Center(
-                        child: Text("By  joining I agree to receive emails from Geeta.",
-                          style: AppTypography.bodyText2.copyWith(color: const Color(0xffA1A1A1)),),
+                        child: Text(
+                          "By  joining I agree to receive emails from Geeta.",
+                          style: AppTypography.bodyText2
+                              .copyWith(color: const Color(0xffA1A1A1)),
+                        ),
                       )
                     ],
                   ),
@@ -141,6 +177,31 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
 
+  _clickSignUp() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    context
+        .read<AuthBloc>()
+        .register(emailController.text, passwordController.text)
+        .then(
+      (value) {
+        DialogUtils.showDialogConfirm(
+          context: context,
+          message: value,
+          onOk: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                SignInPage.ROUTE_NAME, (route) => true);
+          },
+        );
+      },
+    ).catchError(
+      (exception) {
+        DialogUtils.showDialogConfirm(
+          context: context,
+          message: (exception as ErrorModel).message,
+        );
+      },
+    );
   }
 }

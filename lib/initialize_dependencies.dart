@@ -1,14 +1,17 @@
 import 'package:auth_nav/auth_nav.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_application/constants.dart';
 import 'package:flutter_application/data/blocs/auth/auth_bloc.dart';
 import 'package:flutter_application/data/blocs/basket_bloc/basket_bloc.dart';
 import 'package:flutter_application/data/blocs/favorite/favorite_bloc.dart';
 import 'package:flutter_application/data/datasources/local/local_service.dart';
 import 'package:flutter_application/data/repositories/basket_repository_impl.dart';
 import 'package:flutter_application/data/repositories/favorite_repository_impl.dart';
+import 'package:flutter_application/domain/repository/auth_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:oauth2_dio/oauth2_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase/supabase.dart';
 
 import 'data/blocs/home/home_bloc.dart';
 import 'data/dto/dto.dart';
@@ -17,12 +20,15 @@ import 'data/repositories/repositories.dart';
 import 'env.dart';
 
 Future initializeDependencies() async {
+  SupabaseClient suPaBaseClient = SupabaseClient(suPaBaseUrl, suPaBaseAnonKey);
+  GetIt.instance.registerSingleton(suPaBaseClient);
+
   Dio dio = Dio(BaseOptions(baseUrl: baseURL));
   dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
   GetIt.instance.registerSingleton(dio);
 
-  GetIt.instance.registerSingleton(AuthRepository());
+  GetIt.instance.registerSingleton<AuthRepository>(AuthRepositoryImpl());
 
   //region Local Service
   GetIt.instance.registerSingleton(await SharedPreferences.getInstance());
@@ -31,12 +37,15 @@ Future initializeDependencies() async {
   //endregion
 
   //region OAuth Manager
-  Oauth2Manager<AuthenticationDto> _oauth2manager = Oauth2Manager<
-          AuthenticationDto>(
-      currentValue: GetIt.instance.get<LocalService>().getAuthenticationDto(),
-      onSave: (value) {
+  Oauth2Manager<AuthenticationDto> _oauth2manager =
+      Oauth2Manager<AuthenticationDto>(
+    currentValue: GetIt.instance.get<LocalService>().getAuthenticationDto(),
+    onSave: (value) {
+      if (value != null) {
         GetIt.instance.get<LocalService>().saveAuth(value as AuthenticationDto);
-      });
+      }
+    },
+  );
 
   GetIt.instance
       .registerSingleton<Oauth2Manager<AuthenticationDto>>(_oauth2manager);
@@ -69,8 +78,4 @@ Future initializeDependencies() async {
   GetIt.instance.registerSingleton(BasketRepositoryImpl());
 
   GetIt.instance.registerSingleton(HomeBloc());
-
-
-
-
 }

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter_application/data/dto/product_dto.dart';
-import 'package:flutter_application/domain/model/product_model.dart';
 import 'package:flutter_application/domain/repository/home_repository.dart';
 import 'package:flutter_application/gen/assets.gen.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';

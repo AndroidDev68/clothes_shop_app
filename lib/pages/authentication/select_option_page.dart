@@ -71,7 +71,7 @@ class _SelectOptionPageState extends State<SelectOptionPage> {
                           onPrimary: Colors.black,
                           textStyle: AppTypography.smallButton
                         ),
-                        child: Text("LOGIN")),
+                        child: const Text("LOGIN")),
                   ),
                   kSpacingItem3,
                   RichText(text: TextSpan(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTypography {
@@ -16,7 +17,7 @@ class AppTypography {
     );
 
     static TextStyle header3 = GoogleFonts.lato(
-        fontSize: 18,
+        fontSize: 18.sm,
         fontWeight: FontWeight.w700,
         height: 20/18
     );

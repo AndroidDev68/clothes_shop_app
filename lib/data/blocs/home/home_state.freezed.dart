@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'home_state.dart';
 
@@ -52,6 +53,15 @@ mixin _$HomeState {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
+            Map<String, ProductDto> productData)?
+        $default, {
+    TResult Function()? loading,
+    TResult Function(dynamic error)? error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
             Map<String, ProductDto> productData)?
@@ -66,6 +76,13 @@ mixin _$HomeState {
     TResult Function(HomeStateData value) $default, {
     required TResult Function(HomeStateLoading value) loading,
     required TResult Function(HomeStateError value) error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(HomeStateData value)? $default, {
+    TResult Function(HomeStateLoading value)? loading,
+    TResult Function(HomeStateError value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -208,6 +225,19 @@ class _$HomeStateData implements HomeStateData {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
+            Map<String, ProductDto> productData)?
+        $default, {
+    TResult Function()? loading,
+    TResult Function(dynamic error)? error,
+  }) {
+    return $default?.call(
+        notificationCount, basketCount, viewMode, productData);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
             Map<String, ProductDto> productData)?
@@ -230,6 +260,16 @@ class _$HomeStateData implements HomeStateData {
     required TResult Function(HomeStateError value) error,
   }) {
     return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(HomeStateData value)? $default, {
+    TResult Function(HomeStateLoading value)? loading,
+    TResult Function(HomeStateError value)? error,
+  }) {
+    return $default?.call(this);
   }
 
   @override
@@ -310,6 +350,18 @@ class _$HomeStateLoading implements HomeStateLoading {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
+            Map<String, ProductDto> productData)?
+        $default, {
+    TResult Function()? loading,
+    TResult Function(dynamic error)? error,
+  }) {
+    return loading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
             Map<String, ProductDto> productData)?
@@ -332,6 +384,16 @@ class _$HomeStateLoading implements HomeStateLoading {
     required TResult Function(HomeStateError value) error,
   }) {
     return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(HomeStateData value)? $default, {
+    TResult Function(HomeStateLoading value)? loading,
+    TResult Function(HomeStateError value)? error,
+  }) {
+    return loading?.call(this);
   }
 
   @override
@@ -428,6 +490,18 @@ class _$HomeStateError implements HomeStateError {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
+            Map<String, ProductDto> productData)?
+        $default, {
+    TResult Function()? loading,
+    TResult Function(dynamic error)? error,
+  }) {
+    return error?.call(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int notificationCount, int basketCount, ViewMode viewMode,
             Map<String, ProductDto> productData)?
@@ -450,6 +524,16 @@ class _$HomeStateError implements HomeStateError {
     required TResult Function(HomeStateError value) error,
   }) {
     return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(HomeStateData value)? $default, {
+    TResult Function(HomeStateLoading value)? loading,
+    TResult Function(HomeStateError value)? error,
+  }) {
+    return error?.call(this);
   }
 
   @override
