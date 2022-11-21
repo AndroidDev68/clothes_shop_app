@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,4 +16,23 @@ extension ContextExtensions on BuildContext {
   MediaQueryData get mediaQueryData => MediaQuery.of(this);
 
   Size get size => MediaQuery.of(this).size;
+
+  ///Show loading overlay when do sth (submit action,,,,)
+  Future<T> runTask<T>(Future<T> task, {Stream<double>? percent}) async {
+    var overlayEntry = OverlayEntry(
+      builder: (context) => const ColorFiltered(
+        colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcATop),
+        child: CupertinoActivityIndicator(),
+      ),
+    );
+    Overlay.of(this)?.insert(overlayEntry);
+    try {
+      final data = await task;
+      overlayEntry.remove();
+      return data;
+    } catch (error) {
+      overlayEntry.remove();
+      rethrow;
+    }
+  }
 }

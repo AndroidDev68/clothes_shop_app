@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalService {
   final String kKeyAuth = 'key_auth';
+  final String kKeyShowIntro = 'kKeyShowIntro';
 
   //NOTE: List key not delete when user logout
   final List<String> keyExcludes = [];
@@ -15,6 +16,10 @@ class LocalService {
     return sharedPreferences.containsKey(kKeyAuth);
   }
 
+  bool isShowIntroPage(){
+    return sharedPreferences.containsKey(kKeyShowIntro);
+  }
+
   AuthenticationDto? getAuthenticationDto() {
     if (isAuthorized()) {
       return AuthenticationDto.fromJson(
@@ -22,6 +27,10 @@ class LocalService {
     } else {
       return null;
     }
+  }
+
+  Future saveShowIntroPage(bool showed) async {
+    await sharedPreferences.setBool(kKeyShowIntro, showed);
   }
 
   Future saveAuth(AuthenticationDto? authenticationDto) {
