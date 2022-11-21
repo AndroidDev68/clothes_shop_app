@@ -19,15 +19,27 @@ class _AuthenticationNavigatorState extends State<AuthenticationNavigator> {
     return NavigatorSupport(
       initialRoute: SelectOptionPage.ROUTE_NAME,
       onGenerateRoute: (settings) {
-        switch(settings.name){
+        switch (settings.name) {
           case SelectOptionPage.ROUTE_NAME:
-            return MaterialPageRoute(builder: (context)=> const SelectOptionPage());
+            return MaterialPageRoute(
+                builder: (context) => const SelectOptionPage(),
+                settings:
+                    const RouteSettings(name: SelectOptionPage.ROUTE_NAME));
           case SignInPage.ROUTE_NAME:
-            return MaterialPageRoute(builder: (context)=> const SignInPage());
+            return MaterialPageRoute(
+              builder: (context) => const SignInPage(),
+              settings: const RouteSettings(name: SignupPage.ROUTE_NAME),
+            );
           case SignupPage.ROUTE_NAME:
-            return MaterialPageRoute(builder: (context)=>const SignupPage());
+            return MaterialPageRoute(
+              builder: (context) => const SignupPage(),
+              settings: const RouteSettings(name: SignupPage.ROUTE_NAME),
+            );
           default:
-            return MaterialPageRoute(builder: (context)=> const SelectOptionPage());
+            return MaterialPageRoute(
+              builder: (context) => const SelectOptionPage(),
+              settings: const RouteSettings(name: SelectOptionPage.ROUTE_NAME),
+            );
         }
       },
     );

@@ -10,7 +10,7 @@ class AuthRepositoryImpl extends AuthRepository {
   AuthApiService authApiService = AuthApiService();
 
   @override
-  Future<AuthenticationDto> login(String userName, String passWord) {
+  Future<GotrueSessionResponse> login(String userName, String passWord) {
     return authApiService.login(userName, passWord);
   }
 
@@ -26,7 +26,8 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<GotrueSessionResponse>  register(String email, String password) async {
-    return authApiService.register(email, password);
+  Future<GotrueSessionResponse> register(
+      String email, String password, String userName) async {
+    return authApiService.register(email, password, userName);
   }
 }

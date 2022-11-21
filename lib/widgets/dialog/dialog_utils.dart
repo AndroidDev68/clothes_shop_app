@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/application.dart';
 import 'package:flutter_application/constants.dart';
 import 'package:flutter_application/widgets/design_system/app_typography.dart';
 

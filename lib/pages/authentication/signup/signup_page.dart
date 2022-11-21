@@ -1,25 +1,23 @@
 import 'dart:async';
-import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_application/constants.dart';
-import 'package:flutter_application/data/blocs/auth/auth.dart';
 import 'package:flutter_application/domain/model/error_model.dart';
-import 'package:flutter_application/gen/assets.gen.dart';
 import 'package:flutter_application/lib.dart';
 import 'package:flutter_application/pages/authentication/select_option_page.dart';
 import 'package:flutter_application/widgets/design_system/app_typography.dart';
 import 'package:flutter_application/widgets/form/app_text_form_field_material_custom_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_application/utils/string_extensions.dart';
 
+import '../../../widgets/design_system/button_with_loading.dart';
 import '../../../widgets/dialog/dialog_utils.dart';
-import 'checkbox_remember_me_widget.dart';
 
 class SignupPage extends StatefulWidget {
   static const ROUTE_NAME = 'SignupPage';
 
-  const SignupPage();
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -31,6 +29,12 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
   final scrollController = ScrollController();
+  final StreamController<bool> registerLoadingController =
+      StreamController.broadcast();
+  final formKey = GlobalKey<FormState>();
+  final nameColorController = StreamController<Color>.broadcast();
+  final emailColorController = StreamController<Color>.broadcast();
+  final passColorController = StreamController<Color>.broadcast();
 
   @override
   void initState() {
@@ -110,55 +114,104 @@ class _SignupPageState extends State<SignupPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppTextFormFieldMaterialCustomIcon(
-                        focusNode: FocusNode(),
-                        colorShadowStream: StreamController<Color>.broadcast(),
-                        controller: nameController,
-                        labelText: "Your name",
-                        hintText: "Your full name",
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        leadingIcon: SvgPicture.asset(
-                          Assets.icons.icUser,
-                          width: 24,
-                          height: 24,
-                        ),
-                      ),
-                      kSpacingItem5,
-                      AppTextFormFieldMaterialCustomIcon(
-                        focusNode: FocusNode(),
-                        colorShadowStream: StreamController<Color>.broadcast(),
-                        controller: emailController,
-                        labelText: "Email address",
-                        hintText: "Enter your email address",
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        leadingIcon: SvgPicture.asset(
-                          Assets.icons.icLock,
-                          width: 24,
-                          height: 24,
-                        ),
-                      ),
-                      kSpacingItem5,
-                      AppTextFormFieldMaterialCustomIcon(
-                        focusNode: FocusNode(),
-                        colorShadowStream: StreamController<Color>.broadcast(),
-                        controller: passwordController,
-                        labelText: "Password",
-                        hintText: "Enter your password",
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        isPassword: true,
-                        leadingIcon: SvgPicture.asset(
-                          Assets.icons.icLock,
-                          width: 24,
-                          height: 24,
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            AppTextFormFieldMaterialCustomIcon(
+                              focusNode: FocusNode(),
+                              colorShadowStream: nameColorController,
+                              controller: nameController,
+                              labelText: "Your name",
+                              hintText: "Your full name",
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              leadingIcon: SvgPicture.asset(
+                                Assets.icons.icUser,
+                                width: 24,
+                                height: 24,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  nameColorController.sink
+                                        .add(Colors.transparent);
+                                  return "Your name is required!";
+                                }
+                                nameColorController.sink.add(Colors.redAccent);
+                                return null;
+                              },
+                            ),
+                            kSpacingItem5,
+                            AppTextFormFieldMaterialCustomIcon(
+                              focusNode: FocusNode(),
+                              colorShadowStream: emailColorController,
+                              controller: emailController,
+                              labelText: "Email address",
+                              hintText: "Enter your email address",
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  emailColorController.sink.add(Colors.transparent);
+                                  return "Email name is required!";
+                                } else if (!value.isEmail) {
+                                  emailColorController.sink.add(Colors.transparent);
+                                  return "Email isn't correct!";
+                                }
+                                emailColorController.sink.add(Colors.redAccent);
+                                return null;
+                              },
+                              leadingIcon: SvgPicture.asset(
+                                Assets.icons.icLock,
+                                width: 24,
+                                height: 24,
+                              ),
+                            ),
+                            kSpacingItem5,
+                            AppTextFormFieldMaterialCustomIcon(
+                              focusNode: FocusNode(),
+                              colorShadowStream: passColorController,
+                              controller: passwordController,
+                              labelText: "Password",
+                              hintText: "Enter your password",
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              isPassword: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  passColorController.sink.add(Colors.transparent);
+                                  return "Password is required!";
+                                } else if (value.length < 6) {
+                                  passColorController.sink.add(Colors.transparent);
+                                  return "Password must be more than 6 characters!";
+                                }
+                                passColorController.sink.add(Colors.redAccent);
+                                return null;
+                              },
+                              leadingIcon: SvgPicture.asset(
+                                Assets.icons.icLock,
+                                width: 24,
+                                height: 24,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       kSpacingItem3,
                       SizedBox(
                         width: double.infinity,
                         height: 48,
-                        child: ElevatedButton(
-                            onPressed: () => _clickSignUp,
-                            child: const Text("REGISTER")),
+                        child: ButtonWithLoading(
+                          title: Text(
+                            "REGISTER",
+                            style: AppTypography.bodyText1
+                                .copyWith(color: Colors.white),
+                          ),
+                          loadingController: registerLoadingController,
+                          onPressed: _clickSignUp,
+                          bgColor: colorAccent,
+                          borderRadius: 56,
+                        ),
                       ),
                       kSpacingItem,
                       Center(
@@ -180,28 +233,39 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   _clickSignUp() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
-    context
-        .read<AuthBloc>()
-        .register(emailController.text, passwordController.text)
-        .then(
-      (value) {
-        DialogUtils.showDialogConfirm(
-          context: context,
-          message: value,
-          onOk: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                SignInPage.ROUTE_NAME, (route) => true);
-          },
-        );
-      },
-    ).catchError(
-      (exception) {
-        DialogUtils.showDialogConfirm(
-          context: context,
-          message: (exception as ErrorModel).message,
-        );
-      },
-    );
+    if (formKey.currentState?.validate() ?? false) {
+      registerLoadingController.sink.add(true);
+      FocusManager.instance.primaryFocus?.unfocus();
+      context
+          .read<AuthBloc>()
+          .register(emailController.text, passwordController.text,
+              nameController.text)
+          .then(
+        (value) {
+          registerLoadingController.sink.add(false);
+          DialogUtils.showDialogConfirm(
+            context: context,
+            message: value,
+            onOk: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(SignInPage.ROUTE_NAME, (route) {
+                if (route.settings.name != SelectOptionPage.ROUTE_NAME) {
+                  return false;
+                }
+                return true;
+              });
+            },
+          );
+        },
+      ).catchError(
+        (exception) {
+          registerLoadingController.sink.add(false);
+          DialogUtils.showDialogConfirm(
+            context: context,
+            message: (exception as ErrorModel).message,
+          );
+        },
+      );
+    }
   }
 }

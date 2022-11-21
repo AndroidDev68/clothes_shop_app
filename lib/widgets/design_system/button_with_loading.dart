@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 
 class ButtonWithLoading extends StatefulWidget {
   final Widget title;
@@ -35,30 +36,36 @@ class _ButtonWithLoadingState extends State<ButtonWithLoading> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: widget.bgColor,
+      borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
       child: InkWell(
-        onTap: () => widget.onPressed.call(),
+        onTap: () {
+          widget.onPressed.call();
+        },
         borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
-        child: Container(
-          decoration: BoxDecoration(
-            color: widget.bgColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              widget.title,
-              StreamBuilder<bool>(
-                stream: widget.loadingController.stream,
-                builder: (context, snapshot) {
-                  bool showLoading = snapshot.requireData;
-                  if (showLoading) {
-                    return const CupertinoActivityIndicator();
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            widget.title,
+            const SizedBox(
+              width: 24,
+            ),
+            StreamBuilder<bool>(
+              stream: widget.loadingController.stream,
+              initialData: false,
+              builder: (context, snapshot) {
+                bool showLoading = snapshot.requireData;
+                if (showLoading) {
+                  return const ColorFiltered(
+                    colorFilter:
+                        ColorFilter.mode(Colors.white, BlendMode.srcATop),
+                    child: CupertinoActivityIndicator(),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
       ),
     );

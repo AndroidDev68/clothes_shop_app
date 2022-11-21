@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application/data/blocs/auth/auth_bloc.dart';
+import 'package:flutter_application/domain/model/error_model.dart';
 import 'package:flutter_application/gen/assets.gen.dart';
 import 'package:flutter_application/pages/authentication/signup/checkbox_remember_me_widget.dart';
 import 'package:flutter_application/pages/authentication/signup/signup_page.dart';
 import 'package:flutter_application/widgets/design_system/app_typography.dart';
+import 'package:flutter_application/widgets/design_system/button_with_loading.dart';
+import 'package:flutter_application/widgets/dialog/dialog_utils.dart';
 import 'package:flutter_application/widgets/form/app_text_form_field_material_custom_icon.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +29,8 @@ class _SignInPageState extends State<SignInPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final scrollController = ScrollController();
+  final StreamController<bool> loginLoadingController =
+      StreamController.broadcast();
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                       colorShadowStream: StreamController<Color>.broadcast(),
                       controller: passwordController,
                       labelText: "Password",
-                      hintText: "Enter your email address",
+                      hintText: "Enter your password",
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       isPassword: true,
                       leadingIcon: SvgPicture.asset(
@@ -138,7 +143,7 @@ class _SignInPageState extends State<SignInPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CheckboxRememberMeWidget(),
+                        const CheckboxRememberMeWidget(),
                         Text(
                           "Forgot Password?",
                           style: AppTypography.bodyText2.copyWith(
@@ -150,13 +155,24 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(
                       width: double.infinity,
                       height: 48,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            context.read<AuthBloc>().login(
-                                emailController.text.trim(),
-                                passwordController.text.trim());
-                          },
-                          child: const Text("LOGIN")),
+                      // child: ElevatedButton(
+                      //   onPressed: () {
+                      //     context.read<AuthBloc>().login(
+                      //         emailController.text.trim(),
+                      //         passwordController.text.trim());
+                      //   },
+                      //   child: const Text("LOGIN"),
+                      child: ButtonWithLoading(
+                        title: Text(
+                          "LOGIN",
+                          style: AppTypography.bodyText1
+                              .copyWith(color: Colors.white),
+                        ),
+                        loadingController: loginLoadingController,
+                        onPressed: _clickSignUp,
+                        bgColor: colorAccent,
+                        borderRadius: 56,
+                      ),
                     ),
                     kSpacingItem2,
                     Center(
@@ -186,5 +202,20 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  void _clickSignUp() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    loginLoadingController.sink.add(true);
+    context
+        .read<AuthBloc>()
+        .login(emailController.text.trim(), passwordController.text.trim())
+        .then((value) {
+      loginLoadingController.sink.add(false);
+    }).catchError((error) {
+      loginLoadingController.sink.add(false);
+      DialogUtils.showDialogConfirm(
+          context: context, message: (error as ErrorModel).message);
+    });
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_application/data/blocs/home/home_bloc.dart';
 import 'package:flutter_application/initialize_dependencies.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+
 import 'application.dart';
 import 'data/blocs/favorite/favorite_bloc.dart';
 

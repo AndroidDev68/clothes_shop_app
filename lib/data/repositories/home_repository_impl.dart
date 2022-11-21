@@ -4,10 +4,15 @@ import 'package:flutter_application/data/dto/product_dto.dart';
 import 'package:flutter_application/domain/repository/home_repository.dart';
 import 'package:flutter_application/gen/assets.gen.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:get_it/get_it.dart';
+import 'package:supabase/supabase.dart';
 
 class HomeRepositoryImpl extends HomeRepository{
+  final suPaBaseClient = GetIt.instance.get<SupabaseClient>();
   @override
   Future<List<ProductDto>> getProduct(String? type, String? suggestName,int pageSize,int page) async {
+    final response = await suPaBaseClient.from('product').select('*').execute();
+    
     await Future.delayed(const Duration(seconds: 1));
     List<ProductDto> productModels = [];
     List<String> images = [
